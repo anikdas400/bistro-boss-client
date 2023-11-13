@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.carousel .thumbs{
+    text-align: center;
+    }
+.ban{
+    text-align: center;
+    padding: 90px;
+    background-image: url('./assets/menu/banner3.jpg');
+    margin-bottom: 40px;
+}
