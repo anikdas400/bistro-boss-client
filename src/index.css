@@ -11,3 +11,8 @@
     background-image: url('./assets/menu/banner3.jpg');
     margin-bottom: 40px;
 }
+.feat{
+    background-image: url('./assets/home/featured.jpg');
+    /* background-position: initial; */
+    
+}
