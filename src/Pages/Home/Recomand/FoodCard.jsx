@@ -1,6 +1,6 @@
 
 
-const Chef = ({item}) => {
+const FoodCard = ({item}) => {
     const {name,recipe,image,category,price}=item
     return (
         <div>
@@ -8,6 +8,7 @@ const Chef = ({item}) => {
                 <div className="card bg-slate-300 shadow-xl">
                     <figure className="px-10 pt-10">
                         <img src={image} alt="Shoes" className="rounded-xl" />
+                        <p className="absolute right-0 top-12 p-2 rounded-lg mr-10 text-white bg-slate-600">${price}</p>
                     </figure>
                     <div className="card-body items-center text-center">
                         <h2 className="card-title font-semibold">{name}</h2>
@@ -21,4 +22,4 @@ const Chef = ({item}) => {
     );
 };
 
-export default Chef;
+export default FoodCard;

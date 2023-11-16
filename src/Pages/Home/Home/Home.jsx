@@ -1,5 +1,5 @@
-import Footer from "../../Shard/Footer/Footer";
-import Navbar from "../../Shard/Navbar/Navbar";
+import { Helmet } from "react-helmet-async";
+
 import Banner from "../Banner/Banner";
 import Call from "../CallSection/Call";
 import Category from "../Category/Category";
@@ -13,7 +13,10 @@ import TestiMonial from "../TestiMonial/TestiMonial";
 const Home = () => {
     return (
         <div>
-            <Navbar></Navbar>
+            <Helmet>
+            <title>Bistro Boss Restaurant | Home</title>
+            </Helmet>
+            
             <Banner></Banner>
             <Category></Category>
             <Info></Info>
@@ -22,7 +25,7 @@ const Home = () => {
             <Recomand></Recomand>
             <Featured></Featured>
             <TestiMonial></TestiMonial>
-            <Footer></Footer>
+            
         </div>
     );
 };
