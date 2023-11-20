@@ -14,7 +14,7 @@ const FoodCard = ({item}) => {
                         <h2 className="card-title font-semibold">{name}</h2>
                         <p>{recipe}</p>
                         <div className="card-actions">
-                            <button className="btn btn-success btn-outline bg-stone-300 border-0 border-b-4">add to cart </button>
+                            <button className="btn btn-outline bg-stone-300 border-0 border-orange-500 border-b-4">add to cart </button>
                         </div>
                     </div>
                 </div>
