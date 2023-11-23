@@ -1,21 +1,37 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { FaTrashAlt } from "react-icons/fa";
-import {  FaUsers } from "react-icons/fa6";
+import { FaUsers } from "react-icons/fa6";
 import Swal from "sweetalert2";
 
 
 const AllUsers = () => {
     const axiosSecure = useAxiosSecure()
-    const {data: users = [],refatch} = useQuery({
+    const { data: users = [], refatch } = useQuery({
         queryKey: ['users'],
-        queryFn:async()=>{
+        queryFn: async () => {
             const res = await axiosSecure.get('/users')
             return res.data
         }
     })
 
-    const handleMakeAdmin = user =>{}
+    const handleMakeAdmin = user => {
+        axiosSecure.patch(`/users/admin/${user._id}`)
+            .then(res => {
+                console.log(res.data)
+                
+                if (res.data.modifiedCount > 0) {
+                    refatch();
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: `${user.name} is an admin now !`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
+    }
 
     const handleDelete = user => {
         Swal.fire({
@@ -32,10 +48,10 @@ const AllUsers = () => {
                 axiosSecure.delete(`/users/${user._id}`)
                     .then(res => {
                         if (res.data.deletedCount > 0) {
-                            refatch()
+                            // refatch();
                             Swal.fire({
                                 title: "Deleted!",
-                                text: "Your file has been deleted.",
+                                text: "User has been deleted.",
                                 icon: "success"
                             });
                         }
@@ -50,7 +66,7 @@ const AllUsers = () => {
             <div className="flex justify-evenly">
                 <h2 className="text-3xl font-semibold">All Users: </h2>
                 <h2 className="text-3xl font-semibold">Total Users:{users.length} </h2>
-                
+
             </div>
             <div className="overflow-x-auto">
                 <table className="table w-full">
@@ -60,7 +76,7 @@ const AllUsers = () => {
                             <th>
                                 #
                             </th>
-                            <th>NAME</th>                          
+                            <th>NAME</th>
                             <th>EMAIL</th>
                             <th>ROLE</th>
                             <th>ACTION</th>
@@ -80,14 +96,14 @@ const AllUsers = () => {
 
                                 </td>
                                 <td className="text-lg">
-                                <button
+                                    {user.role === 'admin' ? 'Admin' : <button
                                         onClick={() => handleMakeAdmin(user)}
                                         className="btn btn-lg bg-orange-400 "><FaUsers className="text-white hover:text-orange-400 text-2xl"></FaUsers>
-                                    </button>
-                                    </td>
+                                    </button>}
+                                </td>
                                 <th>
-                                <button
-                                        onClick={() => handleDelete(user._id)}
+                                    <button
+                                        onClick={() => handleDelete(user)}
                                         className="btn btn-ghost btn-lg bg-red-700"><FaTrashAlt className="hover:text-red-600 text-white"></FaTrashAlt>
                                     </button>
                                 </th>
@@ -101,7 +117,7 @@ const AllUsers = () => {
 
                 </table>
             </div>
-            
+
         </div>
     );
 };
