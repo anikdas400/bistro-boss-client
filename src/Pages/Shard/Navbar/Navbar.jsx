@@ -1,10 +1,13 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import { FaShoppingCart } from "react-icons/fa";
+import useCart from "../../../Hooks/useCart";
 
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext)
+    const [cart]= useCart()
     const handleLogOut = () => {
         logOut()
             .then(() => { })
@@ -15,7 +18,15 @@ const Navbar = () => {
     const navOptions = <>
         <li className="text-lg font-semibold  "><Link to='/'>Home</Link></li>
         <li className="text-lg font-semibold "><Link to='/menu'>OurMenu</Link></li>
+        <li className="text-lg font-semibold "><Link to='/secret'>Secret</Link></li>
         <li className="text-lg font-semibold"><Link to='/order/salad'>Order Shop</Link></li>
+        <li className="text-lg font-semibold  "><Link to='/dashboard/cart'>
+            <button className="btn">
+            <FaShoppingCart className="text-xl text-emerald-600" />
+                <div className="badge badge-secondary">+{cart.length}</div>
+            </button>
+        </Link></li>
+
 
 
 
@@ -43,16 +54,18 @@ const Navbar = () => {
                         {navOptions}
                     </ul>
                 </div>
-                
+
                 <div className="navbar-end">
-                   
-                {
-                    user ? <>
-                        <button onClick={handleLogOut} className="btn btn-outline btn-secondary">LogOut</button>
-                    </> : <>
-                        <button className="text-lg font-semibold btn-outline btn-secondary "><Link to='/login'>Login</Link></button>
-                    </>
-                }
+
+                    {
+                        user ? <>
+                            <span>{user?.displayName}</span>
+                            <img className="w-12 h-12 rounded-full mr-3 ml-2" src={user?.photoURL} alt="" />
+                            <button onClick={handleLogOut} className="btn btn-outline btn-secondary">LogOut</button>
+                        </> : <>
+                            <button className="text-lg font-semibold btn-outline btn-secondary "><Link to='/login'>Login</Link></button>
+                        </>
+                    }
                 </div>
             </div>
         </>

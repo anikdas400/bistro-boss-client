@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile, } from "firebase/auth";
 import { app } from "../firebase/firebase.config";
 
 export const AuthContext = createContext(null)
@@ -9,10 +9,19 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
+    // social login(google)
+    const googleProvider = new GoogleAuthProvider()
+
     // createUser
     const createUser =(email,password)=>{
         setLoading(true)
         return createUserWithEmailAndPassword(auth,email,password)
+    }
+
+    // social login(google)
+    const googleSignIn =()=>{
+        setLoading(true)
+        return signInWithPopup(auth,googleProvider)
     }
 
     // signIn
@@ -26,6 +35,21 @@ const AuthProvider = ({ children }) => {
         setLoading(true)
         return signOut(auth)
     }
+    // update user profile
+    const updateUserProfile = (name,photo)=>{
+        setLoading(true)
+         return updateProfile(auth.currentUser, {
+            displayName: name, photoURL: photo
+          })
+        //   .then(() => {
+        //     // Profile updated!
+        //     // ...
+        //   }).catch((error) => {
+        //     // An error occurred
+        //     // ...
+        //   });
+    }
+    
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
@@ -43,6 +67,8 @@ const AuthProvider = ({ children }) => {
         createUser,
         signIn,
         logOut,
+        updateUserProfile,
+        googleSignIn
     }
     return (
         <AuthContext.Provider value={authInfo}>

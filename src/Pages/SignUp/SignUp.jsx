@@ -2,21 +2,57 @@
 import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from 'sweetalert2';
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import SocialLogin from "../Shard/SocialLogin/SocialLogin";
+
 
 
 
 const SignUp = () => {
-    const { register, handleSubmit, formState: { errors }, } = useForm()
-    const {createUser}=useContext(AuthContext)
+    const axiosPublic = useAxiosPublic()
+    const { register, handleSubmit, reset, formState: { errors }, } = useForm()
+    const { createUser, updateUserProfile } = useContext(AuthContext)
+    const navigate = useNavigate()
+    
     const onSubmit = (data) => {
         console.log(data)
-        createUser(data.email,data.password)
-        .then(result=>{
-            const loggerUser = result.user
-            console.log(loggerUser)
-        })
+        createUser(data.email, data.password)
+            .then(result => {
+                const loggerUser = result.user
+                console.log(loggerUser)
+                console.log(data.name)
+                updateUserProfile(data.name, data.photoURL)
+                .then(()=>{
+                    // console.log('user profile info update')
+                    const userInfo = {
+                        neme : data.name,
+                        email: data.email,
+                        // photo: data.photoURL
+                    
+                    }
+                    axiosPublic.post('/users',userInfo)
+                    .then(res=>{
+                        if(res.data.insertedId){
+                            console.log('user add to the data base')
+                            reset()
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "User created successfully",
+                                showConfirmButton: false,
+                                timer: 1500
+                              });
+                              navigate('/')
+                        }
+                    })
+                    
+
+                })
+                .catch(error=>console.log(error))
+            })
     }
 
 
@@ -41,6 +77,13 @@ const SignUp = () => {
                                 </label>
                                 <input type="text" {...register("name", { required: true })} name="name" placeholder="Your Name" className="input input-bordered" />
                                 {errors.name && <span className="text-red-600 font-semibold">Name is required</span>}
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text">Photo URL</span>
+                                </label>
+                                <input type="text" {...register("photoURL", { required: true })}  placeholder="photo URL" className="input input-bordered" />
+                                {errors.photoURL && <span className="text-red-600 font-semibold">photoURL is required</span>}
                             </div>
                             <div className="form-control">
                                 <label className="label">
@@ -80,6 +123,7 @@ const SignUp = () => {
                             </div>
                         </form>
                         <p className='text-center mb-5 text-lg'>Already registered? <Link to='/login' className='font-semibold'>Go to log in</Link></p>
+                        <SocialLogin></SocialLogin>
                     </div>
                 </div>
             </div>
