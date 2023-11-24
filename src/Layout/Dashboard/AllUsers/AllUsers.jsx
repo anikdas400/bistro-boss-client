@@ -3,6 +3,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import SectionTitle from "../../../Pages/Shard/SectionTitle/SectionTitle";
 
 
 const AllUsers = () => {
@@ -21,7 +22,7 @@ const AllUsers = () => {
                 console.log(res.data)
                 
                 if (res.data.modifiedCount > 0) {
-                    refatch();
+                    // refatch();
                     Swal.fire({
                         position: "top-end",
                         icon: "success",
@@ -48,7 +49,7 @@ const AllUsers = () => {
                 axiosSecure.delete(`/users/${user._id}`)
                     .then(res => {
                         if (res.data.deletedCount > 0) {
-                            // refatch();
+                            refatch();
                             Swal.fire({
                                 title: "Deleted!",
                                 text: "User has been deleted.",
@@ -63,8 +64,9 @@ const AllUsers = () => {
     }
     return (
         <div>
+            <SectionTitle heading='MANAGE ALL USERS' subHeading='How many???'></SectionTitle>
             <div className="flex justify-evenly">
-                <h2 className="text-3xl font-semibold">All Users: </h2>
+                <h2 className="text-3xl font-semibold">All Users </h2>
                 <h2 className="text-3xl font-semibold">Total Users:{users.length} </h2>
 
             </div>

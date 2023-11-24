@@ -25,10 +25,10 @@ const Dashboard = () => {
                         <NavLink to='/dashboard/adminHome'><FaHome></FaHome> Admin Home</NavLink>
                     </li>
                     <li>
-                        <NavLink to='/dashboard/addItem'><FaUtensils></FaUtensils> add items</NavLink>
+                        <NavLink to='/dashboard/addItems'><FaUtensils></FaUtensils> add items</NavLink>
                     </li>
                     <li>
-                        <NavLink to='/dashboard/manageItem'><FaList></FaList> manage items</NavLink>
+                        <NavLink to='/dashboard/manageItems'><FaList></FaList> manage items</NavLink>
                     </li>
                     <li>
                         <NavLink to='/dashboard/bookings'><FaBookAtlas></FaBookAtlas> Manage bookings</NavLink>
